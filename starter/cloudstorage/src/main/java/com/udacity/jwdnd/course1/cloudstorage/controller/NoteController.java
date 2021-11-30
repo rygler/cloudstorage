@@ -40,7 +40,7 @@ public class NoteController {
             model.addAttribute("success", true);
         } else {
             model.addAttribute("error", true);
-            model.addAttribute("resultMessage", "The note title already exists.");
+            model.addAttribute("message", "The note title already exists.");
         }
 
         return "result";

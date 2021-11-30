@@ -34,6 +34,7 @@ public class FileController {
         if (fileForm.getFile().isEmpty()) {
             //todo: add description
             model.addAttribute("error", true);
+            model.addAttribute("message", "No file selected!");
             return "result";
         }
 
@@ -42,6 +43,7 @@ public class FileController {
         if (!fileService.isFileNameAvailable(fileForm.getFile().getOriginalFilename(), userId)) {
             //todo: add description
             model.addAttribute("error", true);
+            model.addAttribute("message", "A file with this name already exists!");
             return "result";
         }
 
@@ -54,6 +56,7 @@ public class FileController {
         } catch (IOException e) {
             e.printStackTrace();
             model.addAttribute("error", true);
+            model.addAttribute("message", "Oops. Something went wrong on our end. Try again later.");
         }
 
         return "result";
