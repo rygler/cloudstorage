@@ -26,21 +26,32 @@ public class NoteController {
 
     @PostMapping
     public String createNote(Authentication authentication, NoteForm noteForm, Model model) {
+        if (noteForm.getNoteTitle().length() > 20) {
+            System.out.println("length error");
+            model.addAttribute("error", true);
+            model.addAttribute("message", "The note title cannot exceed 20 characters!");
+            return "result";
+        }
+
         int userId = userService.getUserId(authentication.getName());
         Note existingNote = noteService.getNoteByNoteId(noteForm.getNoteId());
-
         if (existingNote == null && noteService.isNoteTitleAvailable(noteForm.getNoteTitle(), userId)) {
             noteForm.setUserId(userId);
             noteService.createNote(noteForm);
             model.addAttribute("success", true);
-        } else if (existingNote != null && noteService.getNoteByNoteTitle(noteForm.getNoteTitle(), userId) != null && Objects.equals(noteService.getNoteByNoteTitle(noteForm.getNoteTitle(), userId).getNoteId(), existingNote.getNoteId())) {
+        } else if (existingNote != null ) {
+            if (noteService.getNoteByNoteTitle(noteForm.getNoteTitle(), userId) != null && Objects.equals(noteService.getNoteByNoteTitle(noteForm.getNoteTitle(), userId).getNoteId(), existingNote.getNoteId())) {
+                model.addAttribute("error", true);
+                model.addAttribute("message", "The note title already exists.");
+                return "result";
+            }
             existingNote.setNoteTitle(noteForm.getNoteTitle());
             existingNote.setNoteDescription(noteForm.getNoteDescription());
             noteService.updateNote(existingNote);
             model.addAttribute("success", true);
         } else {
             model.addAttribute("error", true);
-            model.addAttribute("message", "The note title already exists.");
+            model.addAttribute("message", "Something went wrong. Try again later");
         }
 
         return "result";
