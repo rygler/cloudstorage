@@ -12,6 +12,10 @@ public class ListCredential extends Credential{
         this.encryptedPassword = credential.getPassword();
     }
 
+    public ListCredential () {
+        super();
+    }
+
     public String getEncryptedPassword() {
         return encryptedPassword;
     }

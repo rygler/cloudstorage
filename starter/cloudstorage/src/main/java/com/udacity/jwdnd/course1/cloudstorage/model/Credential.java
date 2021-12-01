@@ -17,6 +17,8 @@ public class Credential {
         this.userId = userId;
     }
 
+    public Credential() {}
+
     public Integer getCredentialId() {
         return credentialId;
     }

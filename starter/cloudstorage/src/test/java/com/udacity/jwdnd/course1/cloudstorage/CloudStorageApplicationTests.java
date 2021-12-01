@@ -1,5 +1,6 @@
 package com.udacity.jwdnd.course1.cloudstorage;
 
+import com.udacity.jwdnd.course1.cloudstorage.model.ListCredential;
 import com.udacity.jwdnd.course1.cloudstorage.model.Note;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
@@ -126,6 +127,64 @@ class CloudStorageApplicationTests {
 
         Assertions.assertThrows(NoSuchElementException.class, () -> notePage.getFirstNote(driver));
     }
+
+
+    @Test
+    @Order(7)
+    public void createCredentialTest() {
+        loginUser();
+        String url = "http://example.com";
+        String username = "username";
+        String password = "password";
+        driver.get(baseURL + "/home");
+        CredentialPage credentialPage = new CredentialPage(driver);
+        credentialPage.createCredential(driver, url, username, password);
+        driver.get(baseURL + "/home");
+        ListCredential credential = credentialPage.getFirstCredential(driver);
+
+        Assertions.assertEquals(url, credential.getUrl());
+        Assertions.assertEquals(username, credential.getUsername());
+        Assertions.assertNotEquals(password, credential.getEncryptedPassword());
+    }
+
+    @Test
+    @Order(8)
+    public void editCredentialTest() {
+        loginUser();
+        String newUrl = "http://new.com";
+        String newUsername = "newusername";
+        String oldPassword = "password";
+        String newPassword = "newpassword";
+        driver.get(baseURL + "/home");
+        CredentialPage credentialPage = new CredentialPage(driver);
+        ListCredential originalCredential = credentialPage.getFirstCredential(driver);
+        System.out.println("OriginalCredentialPassword: " + originalCredential.getPassword());
+        System.out.println("OriginalCredentialEncryptedPassword: " + originalCredential.getEncryptedPassword());
+        Assertions.assertEquals(oldPassword, originalCredential.getPassword());
+
+        credentialPage.editFirstCredential(driver, newUrl, newUsername, newPassword);
+        driver.get(baseURL + "/home");
+        ListCredential newCredential = credentialPage.getFirstCredential(driver);
+
+        Assertions.assertEquals(newUrl, newCredential.getUrl());
+        Assertions.assertEquals(newUsername, newCredential.getUsername());
+        Assertions.assertNotEquals(newPassword, newCredential.getEncryptedPassword());
+        Assertions.assertEquals(newPassword, newCredential.getPassword());
+        Assertions.assertNotEquals(oldPassword, newCredential.getPassword());
+    }
+
+    @Test
+    @Order(9)
+    public void deleteCredentialTest() {
+        loginUser();
+        driver.get(baseURL + "/home");
+        CredentialPage credentialPage = new CredentialPage(driver);
+        credentialPage.deleteCredential(driver);
+        driver.get(baseURL + "/home");
+
+        Assertions.assertThrows(NoSuchElementException.class, () -> credentialPage.getFirstCredential(driver));
+    }
+
 
     @AfterAll
     public static void afterAll() {

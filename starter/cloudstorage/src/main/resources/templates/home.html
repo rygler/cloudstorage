@@ -22,7 +22,7 @@
                    aria-controls="nav-files" aria-selected="true">Files</a>
                 <a class="nav-item nav-link" id="navNotesTab" data-toggle="tab" href="#nav-notes" role="tab"
                    aria-controls="nav-notes" aria-selected="false">Notes</a>
-                <a class="nav-item nav-link" id="nav-credentials-tab" data-toggle="tab" href="#nav-credentials"
+                <a class="nav-item nav-link" id="navCredentialsTab" data-toggle="tab" href="#nav-credentials"
                    role="tab" aria-controls="nav-credentials" aria-selected="false">Credentials</a>
             </div>
         </nav>
@@ -149,7 +149,7 @@
                 </div>
             </div>
             <div class="tab-pane fade" id="nav-credentials" role="tabpanel" aria-labelledby="nav-credentials-tab">
-                <button style="margin: 0.25em;" type="button" class="btn btn-info float-right"
+                <button style="margin: 0.25em;" id="addCredentialButton" type="button" class="btn btn-info float-right"
                         onclick="showCredentialModal()">
                     + Add a New Credential
                 </button>
@@ -169,7 +169,7 @@
                         <div th:each="listCredential : ${credentialList}">
                             <tr>
                                 <td>
-                                    <button type="button" class="btn btn-success"
+                                    <button type="button" class="edit-credential-button btn btn-success"
                                             th:credential-id="${listCredential.credentialId}"
                                             th:credential-url="${listCredential.url}"
                                             th:credential-username="${listCredential.username}"
@@ -177,12 +177,12 @@
                                             onclick="showCredentialModal(this.getAttribute('credential-id'), this.getAttribute('credential-url'), this.getAttribute('credential-username'), this.getAttribute('credential-password'))">
                                         Edit
                                     </button>
-                                    <a class="btn btn-danger"
+                                    <a class="delete-credential-button btn btn-danger"
                                        th:href="@{/home/credential/delete(credentialId=${listCredential.credentialId})}">Delete</a>
                                 </td>
-                                <th scope="row" th:text="${listCredential.url}">Example Credential URL</th>
-                                <td th:text="${listCredential.username}">Example Credential Username</td>
-                                <td th:text="${listCredential.encryptedPassword}">Example Credential Password</td>
+                                <th scope="row" class="credential-url-list-view" th:text="${listCredential.url}">Example Credential URL</th>
+                                <td class="credential-username-list-view" th:text="${listCredential.username}">Example Credential Username</td>
+                                <td class="credential-encrypted-password-list-view" th:text="${listCredential.encryptedPassword}">Example Credential Password</td>
                             </tr>
                         </div>
                         </tbody>
@@ -223,8 +223,8 @@
                                 </form>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary" onclick="$('#credentialSubmit').click();">
+                                <button type="button" id="credential-modal-close-button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" id="credential-modal-submit-button" class="btn btn-primary" onclick="$('#credentialSubmit').click();">
                                     Save changes
                                 </button>
                             </div>
