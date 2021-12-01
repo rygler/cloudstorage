@@ -6,6 +6,10 @@ public class Note {
     private String noteDescription;
     private Integer userId;
 
+    public Note() {
+
+    }
+
     @Override
     public String toString() {
         return "Note{" +
