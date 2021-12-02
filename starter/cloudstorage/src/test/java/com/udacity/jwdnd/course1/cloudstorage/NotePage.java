@@ -10,10 +10,10 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.Arrays;
 
 public class NotePage {
-    @FindBy(id = "navNotesTab")
+    @FindBy(id = "nav-notes-tab")
     private WebElement navNotesTab;
 
-    @FindBy(id = "createNoteButton")
+    @FindBy(id = "create-note-button")
     private WebElement createNoteButton;
 
     @FindBy(id = "note-title")
@@ -22,7 +22,7 @@ public class NotePage {
     @FindBy(id = "note-description")
     private WebElement noteDescriptionField;
 
-    @FindBy(id = "noteModalSubmitButton")
+    @FindBy(id = "note-modal-submit-button")
     private WebElement noteModalSubmitButton;
 
     @FindBy(className = "edit-note-button")

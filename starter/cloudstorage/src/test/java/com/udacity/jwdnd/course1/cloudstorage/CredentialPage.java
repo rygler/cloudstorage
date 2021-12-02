@@ -11,10 +11,10 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class CredentialPage {
 
-    @FindBy(id = "navCredentialsTab")
+    @FindBy(id = "nav-credentials-tab")
     private WebElement navCredentialsTab;
 
-    @FindBy(id = "addCredentialButton")
+    @FindBy(id = "add-credential-button")
     private WebElement addCredentialsButton;
 
     @FindBy(className = "delete-credential-button")

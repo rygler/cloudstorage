@@ -6,13 +6,13 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 public class LoginPage {
-    @FindBy(id = "inputUsername")
+    @FindBy(id = "input-username")
     private WebElement usernameField;
 
-    @FindBy(id = "inputPassword")
+    @FindBy(id = "input-password")
     private WebElement passwordField;
 
-    @FindBy(id = "submitButton")
+    @FindBy(id = "submit-button")
     private WebElement submitButton;
 
     public LoginPage(WebDriver driver){

@@ -6,7 +6,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 public class HomePage {
-    @FindBy(id = "logoutButton")
+    @FindBy(id = "logout-button")
     private WebElement logoutButton;
 
     @FindBy(id = "nav-files-tab")
