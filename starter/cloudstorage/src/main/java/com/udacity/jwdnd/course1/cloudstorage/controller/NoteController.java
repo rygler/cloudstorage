@@ -27,9 +27,12 @@ public class NoteController {
     @PostMapping
     public String createNote(Authentication authentication, NoteForm noteForm, Model model) {
         if (noteForm.getNoteTitle().length() > 20) {
-            System.out.println("length error");
-            model.addAttribute("error", true);
-            model.addAttribute("message", "The note title cannot exceed 20 characters!");
+            addTitleLengthErrorToModel(model);
+            return "result";
+        }
+
+        if (noteForm.getNoteDescription().length() > 1000) {
+            addDescriptionLengthErrorToModel(model);
             return "result";
         }
 
@@ -38,20 +41,18 @@ public class NoteController {
         if (existingNote == null && noteService.isNoteTitleAvailable(noteForm.getNoteTitle(), userId)) {
             noteForm.setUserId(userId);
             noteService.createNote(noteForm);
-            model.addAttribute("success", true);
-        } else if (existingNote != null ) {
+            addSuccessToModel(model);
+        } else if (existingNote != null) {
             if (noteService.getNoteByNoteTitle(noteForm.getNoteTitle(), userId) != null && Objects.equals(noteService.getNoteByNoteTitle(noteForm.getNoteTitle(), userId).getNoteId(), existingNote.getNoteId())) {
-                model.addAttribute("error", true);
-                model.addAttribute("message", "The note title already exists.");
+                addNoteExistsErrorToModel(model);
                 return "result";
             }
             existingNote.setNoteTitle(noteForm.getNoteTitle());
             existingNote.setNoteDescription(noteForm.getNoteDescription());
             noteService.updateNote(existingNote);
-            model.addAttribute("success", true);
+            addSuccessToModel(model);
         } else {
-            model.addAttribute("error", true);
-            model.addAttribute("message", "Something went wrong. Try again later");
+            addTryLaterErrorToModel(model);
         }
 
         return "result";
@@ -64,4 +65,27 @@ public class NoteController {
         return "result";
     }
 
+    private void addTitleLengthErrorToModel(Model model) {
+        model.addAttribute("error", true);
+        model.addAttribute("message", "The note title cannot exceed 20 characters!");
+    }
+
+    private void addDescriptionLengthErrorToModel(Model model) {
+        model.addAttribute("error", true);
+        model.addAttribute("message", "The note description cannot exceed 1000 characters!");
+    }
+
+    private void addNoteExistsErrorToModel(Model model) {
+        model.addAttribute("error", true);
+        model.addAttribute("message", "The note title already exists.");
+    }
+
+    private void addSuccessToModel(Model model) {
+        model.addAttribute("success", true);
+    }
+
+    private void addTryLaterErrorToModel(Model model) {
+        model.addAttribute("error", true);
+        model.addAttribute("message", "Something went wrong. Try again later. ");
+    }
 }
